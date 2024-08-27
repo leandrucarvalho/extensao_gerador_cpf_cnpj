@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
+  "name": "Gerador de CPF e CNPJ",
+  "description": "Nosso gerador online de CPF e CNPJ facilita o desenvolvimento de softwares, fornecendo CPF e CNPJs válidos para testes. Perfeito para estudantes, programadores, analistas e testadores. Lembre-se: Os dados gerados são fictícios e devem ser usados apenas para fins de desenvolvimento. A má utilização é de responsabilidade do usuário.",
   "version": "1.0",
   "action": {
     "default_popup": "index.html",

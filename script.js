@@ -1,100 +1,86 @@
-let create_array = (total, numero) =>
-  Array.from(Array(total), () => number_random(numero));
-let number_random = (number) => Math.round(Math.random() * number);
-let mod = (dividendo, divisor) =>
-  Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);
-
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("generateButton").addEventListener("click", gera);
+  document
+    .getElementById("cpfButton")
+    .addEventListener("click", () => gerarECopiar("cpf"));
+  document
+    .getElementById("cnpjButton")
+    .addEventListener("click", () => gerarECopiar("cnpj"));
 });
 
-function gera() {
-  document.form_main.numero.value = document.form_main.tipo[0].checked
-    ? cpf()
-    : cnpj();
+function gerarECopiar(tipo) {
+  const numero = tipo === "cpf" ? geraCPF() : geraCNPJ();
+  const numeroInput = document.getElementById("numero");
+  numeroInput.value = numero;
+  copiarParaAreaDeTransferencia(numero);
+  exibirMensagemCopiado();
 }
 
-function cpf() {
-  let total_array = 9;
-  let n = 9;
-  let [n1, n2, n3, n4, n5, n6, n7, n8, n9] = create_array(total_array, n);
-
-  let d1 =
-    n9 * 2 +
-    n8 * 3 +
-    n7 * 4 +
-    n6 * 5 +
-    n5 * 6 +
-    n4 * 7 +
-    n3 * 8 +
-    n2 * 9 +
-    n1 * 10;
-  d1 = 11 - mod(d1, 11);
-  if (d1 >= 10) d1 = 0;
-
-  let d2 =
-    d1 * 2 +
-    n9 * 3 +
-    n8 * 4 +
-    n7 * 5 +
-    n6 * 6 +
-    n5 * 7 +
-    n4 * 8 +
-    n3 * 9 +
-    n2 * 10 +
-    n1 * 11;
-  d2 = 11 - mod(d2, 11);
-  if (d2 >= 10) d2 = 0;
-
-  if (document.form_main.mascara.checked)
-    return `${n1}${n2}${n3}.${n4}${n5}${n6}.${n7}${n8}${n9}-${d1}${d2}`;
-  else return `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${d1}${d2}`;
+function geraCPF() {
+  const n = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+  const d1 = calculaDigitoVerificador(n, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const d2 = calculaDigitoVerificador(
+    [...n, d1],
+    [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
+  );
+  n.push(d1, d2);
+  return formatarResultado(n, "cpf");
 }
 
-function cnpj() {
-  let total_array = 8;
-  let n = 9;
-  let [n1, n2, n3, n4, n5, n6, n7, n8] = create_array(total_array, n);
-  let n9 = 0;
-  let n10 = 0;
-  let n11 = 0;
-  let n12 = 1;
+function geraCNPJ() {
+  const n = [
+    ...Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)),
+    0,
+    0,
+    0,
+    1,
+  ];
+  const d1 = calculaDigitoVerificador(n, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const d2 = calculaDigitoVerificador(
+    [...n, d1],
+    [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+  );
+  n.push(d1, d2);
+  return formatarResultado(n, "cnpj");
+}
 
-  let d1 =
-    n12 * 2 +
-    n11 * 3 +
-    n10 * 4 +
-    n9 * 5 +
-    n8 * 6 +
-    n7 * 7 +
-    n6 * 8 +
-    n5 * 9 +
-    n4 * 2 +
-    n3 * 3 +
-    n2 * 4 +
-    n1 * 5;
-  d1 = 11 - mod(d1, 11);
-  if (d1 >= 10) d1 = 0;
+function calculaDigitoVerificador(numeros, pesos) {
+  const soma = numeros.reduce((acc, num, i) => acc + num * pesos[i], 0);
+  const resto = soma % 11;
+  return resto < 2 ? 0 : 11 - resto;
+}
 
-  let d2 =
-    d1 * 2 +
-    n12 * 3 +
-    n11 * 4 +
-    n10 * 5 +
-    n9 * 6 +
-    n8 * 7 +
-    n7 * 8 +
-    n6 * 9 +
-    n5 * 2 +
-    n4 * 3 +
-    n3 * 4 +
-    n2 * 5 +
-    n1 * 6;
-  d2 = 11 - mod(d2, 11);
-  if (d2 >= 10) d2 = 0;
+function formatarResultado(numeros, tipo) {
+  if (document.getElementById("mascara").checked) {
+    return tipo === "cpf"
+      ? `${numeros.slice(0, 3).join("")}.${numeros
+          .slice(3, 6)
+          .join("")}.${numeros.slice(6, 9).join("")}-${numeros
+          .slice(9)
+          .join("")}`
+      : `${numeros.slice(0, 2).join("")}.${numeros
+          .slice(2, 5)
+          .join("")}.${numeros.slice(5, 8).join("")}/${numeros
+          .slice(8, 12)
+          .join("")}-${numeros.slice(12).join("")}`;
+  }
+  return numeros.join("");
+}
 
-  if (document.form_main.mascara.checked)
-    return `${n1}${n2}.${n3}${n4}${n5}.${n6}${n7}${n8}/${n9}${n10}${n11}${n12}-${d1}${d2}`;
-  else
-    return `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${n10}${n11}${n12}${d1}${d2}`;
+function copiarParaAreaDeTransferencia(texto) {
+  navigator.clipboard
+    .writeText(texto)
+    .then(() => {
+      console.log("Texto copiado com sucesso!");
+    })
+    .catch((err) => {
+      console.error("Erro ao copiar texto: ", err);
+    });
+}
+
+function exibirMensagemCopiado() {
+  const mensagem = document.getElementById("copiadoMensagem");
+  mensagem.classList.add("show");
+  setTimeout(() => {
+    mensagem.classList.remove("show");
+  }, 2000);
 }

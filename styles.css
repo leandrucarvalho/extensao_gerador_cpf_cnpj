@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+  padding: 10px;
+}
+
+.container > * {
+  margin: 10px;
+}
+
+#numero {
+  width: 200px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+}
+
+label {
+  display: block;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+  width: 100px;
+  height: 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#copiadoMensagem {
+  color: #333;
+  font-size: 14px;
+  display: none;
+}
+
+#copiadoMensagem.show {
+  display: block;
+  color: green;
+  font-size: 16px;
+  font-weight: bold;
+}

@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerador de CPF e CNPJ</title>
-    <script src="script.js" defer></script>
-    <!-- Adicione o defer para garantir que o script seja carregado após o HTML -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h2>Gerador de CPF E CNPJ válidos</h2>
-    <form name="form_main">
-      <label for="numero">Número:</label>
-      <input name="numero" id="numero" size="20" type="text" /><br />
-      Tipo:
-      <input name="tipo" value="cpf" id="cpf" checked="checked" type="radio" />
-      <label for="cpf">CPF</label>
-      <input name="tipo" value="cnpj" id="cnpj" type="radio" />
-      <label for="cnpj">CNPJ</label>
-      <input name="mascara" value="mascara" id="mascara" type="checkbox" />
-      <label for="mascara">Máscara</label><br /><br />
-      <input name="button" id="generateButton" value="Gerar" type="button" />
-    </form>
+    <div class="container">
+      <h2>Gerador de CPF e CNPJ válidos</h2>
+      <input type="text" id="numero" readonly />
+      <label><input type="checkbox" id="mascara" /> Utilizar máscara</label>
+      <div class="button-container">
+        <button id="cpfButton">CPF</button>
+        <button id="cnpjButton">CNPJ</button>
+      </div>
+      <div id="copiadoMensagem">Copiado para Área de Transferência</div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
